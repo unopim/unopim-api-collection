@@ -2,7 +2,7 @@
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/unopim/unopim-apis)
 
-Official Postman collection for the [UnoPim](https://unopim.com) REST API — a headless, open-source PIM system.
+Official Postman collection for the [UnoPim](https://unopim.com) REST API, open-source PIM system.
 
 ## What's Included
 
