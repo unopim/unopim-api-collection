@@ -18,19 +18,35 @@ jobs:
           echo "$RESPONSE" | python3 -c "
           import json, sys
           data = json.load(sys.stdin)
-          # Postman API wraps response under 'collection' key
           collection = data.get('collection', data)
           with open('collections/Official-UnoPim-APIs.postman_collection.json', 'w') as f:
               json.dump(collection, f, indent=2)
           print('Collection synced successfully')
           "
 
+      - name: Fetch latest environment from Postman API
+        run: |
+          RESPONSE=$(curl -s "https://api.getpostman.com/environments/${{ secrets.POSTMAN_ENVIRONMENT_ID }}" \
+            -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}")
+          echo "$RESPONSE" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          environment = data.get('environment', data)
+          # Sanitize secret values before committing
+          for var in environment.get('values', []):
+              if var.get('type') == 'secret':
+                  var['value'] = ''
+          with open('environments/UnoPim-Local.postman_environment.json', 'w') as f:
+              json.dump(environment, f, indent=2)
+          print('Environment synced successfully')
+          "
+
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add collections/
+          git add collections/ environments/
           git diff --cached --quiet && echo "No changes to commit" || (
-            git commit -m "chore: sync Postman collection for ${{ github.ref_name }}"
+            git commit -m "chore: sync Postman collection & environment for ${{ github.ref_name }}"
             git push
           )
