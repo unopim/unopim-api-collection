@@ -1,4 +1,4 @@
 .playwright-mcp/
 *.postman_environment.json.local
 UnoPim.postman_environment.json
-"Official UnoPim APIs.postman_collection.json"
+Official UnoPim APIs.postman_collection.json
