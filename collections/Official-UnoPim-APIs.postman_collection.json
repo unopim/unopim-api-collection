@@ -1,6 +1,2318 @@
 {
-  "error": {
-    "name": "invalidUidError",
-    "message": "The specified uid is invalid."
-  }
+  "info": {
+    "_postman_id": "ef999799-2be1-4a23-bff8-a1e7a10f1563",
+    "name": "Official UnoPim APIs",
+    "description": "The UnoPim API is a comprehensive RESTful API for managing Product Information Management (PIM) operations. This API enables you to manage products, categories, attributes, locales, channels, and other essential PIM functionalities.\n\n**Official Documentation**: [Postman Documenter](https://documenter.getpostman.com/view/21990056/2sA3kXE17F)\n\n---\n\n## \ud83d\udd10 Authentication\n\nUnoPim API uses **OAuth 2.0** for authentication with two methods:\n\n### 1\\. Authentication by Password\n\n**Endpoint:** `POST {{url}}/oauth/token`\n\n**Request Body:**\n\n``` json\n{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\",\n    \"grant_type\": \"password\"\n}\n\n ```\n\n**Headers:**\n\n```\nAuthorization: Basic {{base64ClientIdSecret}}\nContent-Type: application/json\n\n ```\n\n\u2728 **Auto-saves** `access_token` and `refresh_token` to environment variables\n\n### 2\\. Authentication by Refresh Token\n\n**Endpoint:** `POST {{url}}/oauth/token`\n\n**Request Body:**\n\n``` json\n{\n    \"refresh_token\": \"{{refreshToken}}\",\n    \"grant_type\": \"refresh_token\"\n}\n\n ```\n\n---\n\n## \ud83c\udf10 Base URL\n\n```\n{{url}}/api/v1/rest\n\n ```\n\n---\n\n## \ud83d\udcc2 API Resources (45 Endpoints)\n\n### 1\\. **Locale Management** (2 endpoints)\n\n- `GET /locales` - Get all locales\n    \n- `GET /locales/{code}` - Get locale by code\n    \n\n### 2\\. **Currency Management** (2 endpoints)\n\n- `GET /currencies` - Get all currencies\n    \n- `GET /currencies/{code}` - Get currency by code\n    \n\n### 3\\. **Channel Management** (2 endpoints)\n\n- `GET /channels` - Get all channels\n    \n- `GET /channels/{code}` - Get channel by code (e.g., ecommerce)\n    \n\n### 4\\. **Category Management** (5 endpoints)\n\n- `GET /categories` - Get all categories (with pagination & filters)\n    \n- `GET /categories/{code}` - Get category by code\n    \n- `POST /categories` - Create a category\n    \n- `PUT /categories/{code}` - Update a category\n    \n- `POST /media-files/category` - Upload category media files\n    \n\n**Example Create Category Request:**\n\n``` json\n{\n    \"code\": \"electronic4\",\n    \"parent\": \"electronic2\",\n    \"additional_data\": {\n        \"common\": {\n            \"description\": \"Electronics Category Description\",\n            \"required\": \"Electronics Required Category\"\n        },\n        \"locale_specific\": {\n            \"de_DE\": {\"name\": \"Electronic 3 (de_DE)\"},\n            \"en_US\": {\"name\": \"Electronic 3(en_US)\"},\n            \"fr_FR\": {\"name\": \"Electronic 3(fr_FR)\"}\n        }\n    }\n}\n\n ```\n\n### 5\\. **Category Fields Management** (4 endpoints)\n\n- `GET /category-fields` - Get all category fields\n    \n- `GET /category-fields/{code}` - Get category field by code\n    \n- `POST /category-fields` - Create a category field\n    \n- `PUT /category-fields/{code}` - Update a category field\n    \n\n### 6\\. **Category Field Options** (3 endpoints)\n\n- `GET /category-fields/{code}/options` - Get field options\n    \n- `POST /category-fields/{code}/options` - Create field options\n    \n- `PUT /category-fields/{code}/options` - Update field options\n    \n\n### 7\\. **Attribute Management** (4 endpoints)\n\n- `GET /attributes` - Get all attributes (with pagination & filters)\n    \n- `GET /attributes/{code}` - Get attribute by code\n    \n- `POST /attributes` - Create an attribute\n    \n- `PUT /attributes/{code}` - Update an attribute\n    \n\n**Example Filter:**\n\n``` json\n{\n  \"code\": [{\n    \"operator\": \"IN\",\n    \"value\": [\"weight\"]\n  }]\n}\n\n ```\n\n### 8\\. **Attribute Options** (3 endpoints)\n\n- `GET /attributes/{code}/options` - Get attribute options (e.g., size: S, M, L, XL)\n    \n- `POST /attributes/{code}/options` - Create attribute options\n    \n- `PUT /attributes/{code}/options` - Update attribute options\n    \n\n### 9\\. **Attribute Groups** (4 endpoints)\n\n- `GET /attribute-groups` - Get all attribute groups\n    \n- `GET /attribute-groups/{code}` - Get attribute group by code\n    \n- `POST /attribute-groups` - Create an attribute group\n    \n- `PUT /attribute-groups/{code}` - Update an attribute group\n    \n\n### 10\\. **Attribute Families** (4 endpoints)\n\n- `GET /attribute-families` - Get all attribute families\n    \n- `GET /attribute-families/{code}` - Get attribute family by code\n    \n- `POST /attribute-families` - Create an attribute family\n    \n- `PUT /attribute-families/{code}` - Update an attribute family\n    \n\n### 11\\. **Product Management** (4 endpoints)\n\n- `GET /products` - Get all products (with pagination & filters)\n    \n- `GET /products/{sku}` - Get product by SKU\n    \n- `POST /products` - Create a product\n    \n- `PUT /products/{sku}` - Update a product\n    \n\n### 12\\. **Configurable Products** (6 endpoints)\n\n- `GET /products/configurable` - Get all configurable products\n    \n- `GET /products/configurable/{sku}` - Get configurable product by SKU\n    \n- `POST /products/configurable` - Create configurable product\n    \n- `PUT /products/configurable/{sku}` - Update configurable product\n    \n- `POST /products` - Add new variant (product children)\n    \n- `POST /products/configurable/{sku}/variants` - Associate variants to configurable product\n    \n\n---\n\n## \ud83d\udd0d Common Query Parameters\n\n### Pagination\n\n```\n?limit=100&page=1\n\n ```\n\n### Filtering\n\n``` json\n{\n  \"field_name\": [{\n    \"operator\": \"=\",\n    \"value\": \"VALUE\"\n  }]\n}\n\n ```\n\n**Supported Operators:** `=`, `!=`, `IN`, `NOT IN`, `>`, `<`, `>=`, `<=`, `LIKE`\n\n---\n\n## \ud83d\udce4 Response Formats\n\n### Success Response:\n\n``` json\n{\n  \"data\": { ... },\n  \"message\": \"Success message\",\n  \"status\": true\n}\n\n ```\n\n### Paginated Response:\n\n``` json\n{\n  \"data\": [ ... ],\n  \"meta\": {\n    \"current_page\": 1,\n    \"per_page\": 100,\n    \"total\": 500,\n    \"last_page\": 5\n  }\n}\n\n ```\n\n### Error Response:\n\n``` json\n{\n  \"error\": \"Error message\",\n  \"message\": \"Detailed error description\",\n  \"status\": false\n}\n\n ```\n\n---\n\n## \u26a0\ufe0f HTTP Status Codes\n\n- **200 OK** - Request successful\n    \n- **201 Created** - Resource created\n    \n- **400 Bad Request** - Invalid parameters\n    \n- **401 Unauthorized** - Invalid/expired token\n    \n- **403 Forbidden** - Insufficient permissions\n    \n- **404 Not Found** - Resource not found\n    \n- **422 Unprocessable Entity** - Validation errors\n    \n- **429 Too Many Requests** - Rate limit exceeded\n    \n- **500 Internal Server Error** - Server error\n    \n\n---\n\n## \ud83c\udfaf Best Practices\n\n1. **Token Management** - Implement automatic token refresh before expiration\n    \n2. **Error Handling** - Always check response status codes and handle errors gracefully\n    \n3. **Performance** - Use pagination and filters to reduce payload sizes\n    \n4. **Locale Support** - Always provide locale-specific data for multi-language support\n    \n5. **Caching** - Cache responses when appropriate to reduce API calls\n    \n\n---\n\n## \ud83d\udca1 What's Next?\n\nI can help you with:\n\n1. **Add test scripts** to validate responses for specific endpoints\n    \n2. **Create a monitor** to automatically test critical endpoints on a schedule\n    \n3. **Generate code snippets** in various languages (JavaScript, Python, cURL, PHP, etc.)\n    \n4. **Set up mock servers** to simulate API responses for development\n    \n5. **Create automated workflows** using Postman Flows\n    \n6. **Export documentation** in different formats (HTML, Markdown, PDF)\n    \n7. **Add examples** to specific requests for better documentation\n    \n8. **Create pre-request scripts** for dynamic data generation\n    \n\nWould you like me to help with any of these next steps?",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4385199",
+    "_collection_link": "https://go.postman.co/collection/37137259-ef999799-2be1-4a23-bff8-a1e7a10f1563?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Locale",
+      "item": [
+        {
+          "name": "Get All Locales",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/locales",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "locales"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "300",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"status\":[{\"operator\":\"=\",\"value\": true}]}",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"status\":[{\"operator\":\"=\",\"value\": false}]}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get locale by Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/locales/en_US",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "locales",
+                "en_US"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to locales."
+    },
+    {
+      "name": "Currency",
+      "item": [
+        {
+          "name": "Get all Currencies",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/currencies",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "currencies"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"status\":[{\"operator\":\"=\",\"value\": true}]}",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"status\":[{\"operator\":\"=\",\"value\": false}]}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Currency By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/currencies/SAR",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "currencies",
+                "SAR"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Currencies."
+    },
+    {
+      "name": "Channel",
+      "item": [
+        {
+          "name": "Get All Channels",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/channels",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "channels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Channel By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/channels/ecommerce",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "channels",
+                "ecommerce"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Channels.\n\n###"
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "filters",
+                  "value": "{\"parent\":[{\"operator\":\"=\",\"value\": \"master\"}]}",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category by Category Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/master_accessories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "master_accessories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"electronic4\",\n    \"parent\": \"electronic2\",\n    \"additional_data\": {\n        \"common\": {\n            \"file\": \"https://morth.nic.in/sites/default/files/dd12-13_0.pdf\",\n            \"image\": \"https://www.gstatic.com/webp/gallery3/1.sm.png\",\n            \"unique\": \"Electronics Unique Category\",\n            \"boolean\": \"1\",\n            \"date123\": \"2024-07-24\",\n            \"checkbox\": \"cbcat2,cbcat3\",\n            \"required\": \"Electronics Required Category\",\n            \"date_time\": \"2024-07-23 11:40:00\",\n            \"description\": \"Electronics Category Description\",\n            \"multi_select\": \"mcat3,mcat4\",\n            \"configuration\": \"Electronics Configuration Section Category\",\n            \"simple_select\": \"cat2\",\n            \"description_editor\": \"<ol>\\r\\n<li><em><strong>Electronics category Description Editor</strong></em></li>\\r\\n</ol>\"\n        },\n        \"locale_specific\": {\n            \"de_DE\": {\n                \"name\": \"Electronic 3 (de_DE)\"\n            },\n            \"en_US\": {\n                \"name\": \"Electronic 3(en_US)\"\n            },\n            \"fr_FR\": {\n                \"name\": \"Electronic 3(fr_FR)\"\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"electronic3\",\n    \"parent\": \"electronic2\",\n    \"additional_data\": {\n        \"common\": {\n            \"file\": \"category/19/file/WK-HR-004 - Holiday list_2020.pdf\",\n            \"image\": \"category/19/image/6.jpg\",\n            \"unique\": \"Electronics Unique Category\",\n            \"boolean\": \"1\",\n            \"date123\": \"2024-07-24\",\n            \"checkbox\": \"cbcat2,cbcat3\",\n            \"required\": \"Electronics Required Category\",\n            \"date_time\": \"2024-07-23 11:40:00\",\n            \"description\": \"Electronics Category Description\",\n            \"multi_select\": \"mcat3,mcat4\",\n            \"configuration\": \"Electronics Configuration Section Category\",\n            \"simple_select\": \"cat2\",\n            \"description_editor\": \"<ol>\\r\\n<li><em><strong>Electronics category Description Editor</strong></em></li>\\r\\n</ol>\"\n        },\n        \"locale_specific\": {\n            \"de_DE\": {\n                \"name\": \"Electronic 4 (de_DE)\",\n                \"locale\": \"Electronic Locale wise Category DE\"\n            },\n            \"en_US\": {\n                \"name\": \"Electronic 4(en_US)\",\n                \"locale\": \"Electronic Locale wise Category EN\"\n            },\n            \"fr_FR\": {\n                \"name\": \"Electronic 4(fr_FR)\",\n                \"locale\": \"Electronic Locale wise Category FR\"\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/electronic3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "electronic3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload & Generate Category Media File path",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/home/users/deepak.kumar/Downloads/Image/bag.jpg"
+                },
+                {
+                  "key": "code",
+                  "value": "electronic3",
+                  "type": "text"
+                },
+                {
+                  "key": "category_field",
+                  "value": "file",
+                  "type": "text"
+                },
+                {
+                  "key": "scope",
+                  "value": "null",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "locale",
+                  "value": "null",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/media-files/category",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "media-files",
+                "category"
+              ],
+              "query": [
+                {
+                  "key": "file",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/electronic3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "electronic3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update a Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/electronic3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "electronic3"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"parent\": \"master\",\n    \"additional_data\": {\n        \"locale_specific\": {\n            \"en_US\": {\n                \"name\": \"Electronics Updated\"\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Category.\n\n###"
+    },
+    {
+      "name": "Category Fields",
+      "item": [
+        {
+          "name": "Get All Category Fields",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": " application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a Category Field By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields/simple_select",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields",
+                "simple_select"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Category Field",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"erpname\",\n    \"type\": \"text\",\n    \"status\": 1,\n    \"validation\": null,\n    \"regex_pattern\": \"\",\n    \"position\": 1,\n    \"is_required\": 0,\n    \"is_unique\": 0,\n    \"value_per_locale\": 0,\n    \"enable_wysiwyg\": 0,\n    \"section\": \"left\",\n    \"labels\": {\n        \"en_US\": \"Erp Name\",\n        \"fr_FR\": \"Erp Name\",\n        \"de_DE\": \"Erp Name\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a Category Field By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"text\",\n    \"status\": 1,\n    \"regex_pattern\": \"\",\n    \"validation\": null,\n    \"position\": 1,\n    \"is_required\": 1,\n    \"is_unique\": 1,\n    \"section\": \"left\",\n    \"value_per_locale\": 1,\n    \"enable_wysiwyg\": 0,\n    \"labels\": {\n        \"en_US\": \"Erp Name\",\n        \"fr_FR\": \"Erp Name\",\n        \"de_DE\": \"Erp Name\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields/erpname",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields",
+                "erpname"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Category Fields.\n\n###"
+    },
+    {
+      "name": "Category Field Options",
+      "item": [
+        {
+          "name": "Get a Category Field Options By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields/{{FieldCode}}/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields",
+                "{{FieldCode}}",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Category Field Options",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": " application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"code\": \"black\",\n        \"sort_order\": 2,\n        \"labels\": {\n            \"en_US\": \"Black\",\n            \"fr_FR\": \"Noir\"\n        }\n    },\n    {\n        \"code\": \"red\",\n        \"sort_order\": 2,\n        \"labels\": {\n            \"en_US\": \"red\",\n            \"fr_FR\": \"red\"\n        }\n    },\n    {\n        \"code\": \"ddsdfasdas\",\n        \"sort_order\": 2,\n        \"labels\": {\n            \"en_US\": \"Black\",\n            \"fr_FR\": \"Noir\"\n        }\n    }\n\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields/checkbox/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields",
+                "checkbox",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category Field Options",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"code\": \"black\",\n        \"sort_order\": 2,\n        \"labels\": {\n            \"en_US\": \"Black\",\n            \"fr_FR\": \"Noir\"\n        }\n    },\n    {\n        \"code\": \"red\",\n        \"sort_order\": 1,\n        \"labels\": {\n            \"en_US\": \"red\",\n            \"fr_FR\": \"red\"\n        }\n    },\n    {\n        \"code\": \"ddsdfasdas\",\n        \"sort_order\": 3,\n        \"labels\": {\n            \"en_US\": \"Black\",\n            \"fr_FR\": \"Noir\"\n        }\n    }\n\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/category-fields/checkbox/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "category-fields",
+                "checkbox",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Category Field Options.\n\n###"
+    },
+    {
+      "name": "Attribute",
+      "item": [
+        {
+          "name": "Get an Attributes",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"code\":[{\"operator\":\"IN\",\"value\": [\"weight\"]}]}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get an Attribute By Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes/status",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create an attribute",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"erpname\",\n    \"type\": \"text\",\n    \"swatch_type\": null,\n    \"validation\": null,\n    \"regex_pattern\": null,\n    \"position\": 3,\n    \"is_required\": 0,\n    \"is_unique\": 0,\n    \"is_configurable\": 0,\n    \"value_per_locale\": 0,\n    \"value_per_channel\": 1,\n    \"default_value\": null,\n    \"enable_wysiwyg\": 0,\n    \"labels\": {\n        \"en_US\": \"ERP Name\",\n        \"de_DE\": \"ERP Name\",\n        \"fr_FR\": \"ERP Name\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update an Attribute By Attribute Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": " application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"releasedate\",\n    \"type\": \"datetime\",\n    \"swatch_type\": null,\n    \"validation\": null,\n    \"regex_pattern\": \"\",\n    \"position\": null,\n    \"is_required\": 0,\n    \"is_unique\": 0,\n    \"is_configurable\": 0,\n    \"value_per_locale\": 0,\n    \"value_per_channel\": 0,\n    \"enable_wysiwyg\": 0,\n    \"labels\": {\n        \"en_US\": \"Release Data\",\n        \"fr_FR\": \"Release Data French\",\n        \"de_DE\": \"Release Data German\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes/releasedate",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes",
+                "releasedate"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Attribute.\n\n###"
+    },
+    {
+      "name": "Attribute Options",
+      "item": [
+        {
+          "name": "Get Attribute Options By Attribute Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes/size/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes",
+                "size",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Attribute Options By Attribute Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"code\": \"size4\",\n        \"sort_order\": 4,\n        \"labels\": {\n            \"de_DE\": \"Extra Large\",\n            \"en_US\": \"Extra Large\",\n            \"fr_FR\": \"Extra Large\"\n        }\n    }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes/size/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes",
+                "size",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Attribute Options By Attribute Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"code\": \"SL\",\n        \"sort_order\": 1,\n        \"labels\": {\n            \"en_US\": \"SELL123\"\n        }\n    }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attributes/size/options",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attributes",
+                "size",
+                "options"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload & Generate Swatch Media File path",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/media-files/swatch",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "media-files",
+                "swatch"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/swatch-image.png"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Attribute Options.\n\n###"
+    },
+    {
+      "name": "Attribute Groups",
+      "item": [
+        {
+          "name": "Get All Attribute Groups",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attribute-groups",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attribute-groups"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attribute Group by Group Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attribute-groups/marketing",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attribute-groups",
+                "marketing"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create an Attribute Group",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"PIM2\",\n    \"labels\": {\n        \"en_US\": \"Pim Laravel1 German\",\n        \"fr_FR\": \"Pim Laravel1\",\n        \"de_DE\": \"Pim Laravel1 French\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attribute-groups",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attribute-groups"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update an Attribute Group",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"PIM2\",\n    \"labels\": {\n        \"en_US\": \"PIM23\",\n        \"fr_FR\": \"PIM241\",\n        \"de_DE\": \"PIM25\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/attribute-groups/PIM2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "attribute-groups",
+                "PIM2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Attribute Groups.\n\n###"
+    },
+    {
+      "name": "Attribute Families",
+      "item": [
+        {
+          "name": "Get a Attribute Families",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/families",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "families"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a Attribute Families By Family Code",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/families/accessories",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "families",
+                "accessories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Attribute Family",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": " application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"Garment\",\n    \"labels\": {\n        \"de_DE\": \"Garment German\",\n        \"en_US\": \"Garment\",\n        \"fr_FR\": \"Garment French\"\n    },\n    \"attribute_groups\": [\n        {\n            \"code\": \"product\",\n            \"position\": 1,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"sku\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"Name\",\n                    \"position\": 2\n                },\n                {\n                    \"code\": \"erpname\",\n                    \"position\": 3\n                },\n                {\n                    \"code\": \"collection\",\n                    \"position\": 4\n                },\n                {\n                    \"code\": \"description\",\n                    \"position\": 5\n                },\n                {\n                    \"code\": \"price\",\n                    \"position\": 6\n                },\n                {\n                    \"code\": \"color\",\n                    \"position\": 7\n                },\n                {\n                    \"code\": \"size\",\n                    \"position\": 8\n                },\n                {\n                    \"code\": \"colormuliselect\",\n                    \"position\": 9\n                },\n                {\n                    \"code\": \"colorlocalewise\",\n                    \"position\": 10\n                },\n                {\n                    \"code\": \"colorchannelwise\",\n                    \"position\": 11\n                }\n            ]\n        },\n        {\n            \"code\": \"medias\",\n            \"position\": 2,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"image\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"files\",\n                    \"position\": 2\n                }\n            ]\n        },\n        {\n            \"code\": \"technical\",\n            \"position\": 3,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"status\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"auto_exposure\",\n                    \"position\": 2\n                },\n                {\n                    \"code\": \"releasedate\",\n                    \"position\": 3\n                },\n                {\n                    \"code\": \"expire_date\",\n                    \"position\": 4\n                }\n            ]\n        },\n        {\n            \"code\": \"seo\",\n            \"position\": 4,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"short_description\",\n                    \"position\": 1\n                }\n            ]\n        },\n        {\n            \"code\": \"marketing\",\n            \"position\": 5,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"store\",\n                    \"position\": 1\n                }\n            ]\n        },\n        {\n            \"code\": \"erp\",\n            \"position\": 6,\n            \"custom_attributes\": []\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/families",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "families"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a Attribute Family",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"shoes\",\n    \"labels\": {\n        \"de_DE\": \"Shoes German\",\n        \"en_US\": \"Shoes\",\n        \"fr_FR\": \"Shoes French\"\n    },\n    \"attribute_groups\": [\n        {\n            \"code\": \"product\",\n            \"position\": 1,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"sku\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"Name\",\n                    \"position\": 2\n                },\n                {\n                    \"code\": \"collection\",\n                    \"position\": 3\n                },\n                {\n                    \"code\": \"description\",\n                    \"position\": 4\n                },\n                {\n                    \"code\": \"price\",\n                    \"position\": 5\n                },\n                {\n                    \"code\": \"color\",\n                    \"position\": 6\n                }\n            ]\n        },\n        {\n            \"code\": \"medias\",\n            \"position\": 2,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"image\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"files\",\n                    \"position\": 2\n                }\n            ]\n        },\n        {\n            \"code\": \"technical\",\n            \"position\": 3,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"status\",\n                    \"position\": 1\n                },\n                {\n                    \"code\": \"auto_exposure\",\n                    \"position\": 2\n                },\n                {\n                    \"code\": \"releasedate\",\n                    \"position\": 3\n                },\n                {\n                    \"code\": \"expire_date\",\n                    \"position\": 4\n                }\n            ]\n        },\n        {\n            \"code\": \"seo\",\n            \"position\": 4,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"short_description\",\n                    \"position\": 1\n                }\n            ]\n        },\n        {\n            \"code\": \"marketing\",\n            \"position\": 5,\n            \"custom_attributes\": [\n                {\n                    \"code\": \"store\",\n                    \"position\": 1\n                }\n            ]\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/families/shoes",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "families",
+                "shoes"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Attribute Family."
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"parent\":[{\"operator\":\"=\",\"value\": \"root\"}]}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product By SKU",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/1111111304",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "1111111304"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"44441\",\n    \"parent\": null,\n    \"family\": \"default\",\n    \"type\": \"simple\",\n    \"additional\": null,\n    \"values\": {\n        \"common\": {\n            \"sku\": \"44441\",\n            \"Name\": \"Webkul Simple Product\",\n            \"size\": \"size3\",\n            \"color\": \"option1\",\n            \"price\": \"{\\\"USD\\\":\\\"100\\\"}\",\n            \"status\": \"true\",\n            \"collection\": \"option2,option3\",\n            \"description\": \"<p>Webkul Simple Product Description1111</p>\",\n            \"colormuliselect\": \"red1,blue1\",\n            \"short_description\": \"Webkul Simple Product Short Description211\"\n        },\n        \"categories\": [\n            \"root\"\n        ],\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"44441\",\n    \"parent\": null,\n    \"family\": \"accessories\",\n    \"type\": \"simple\",\n    \"additional\": null,\n    \"created_at\": \"2024-07-11T13:21:46.000000Z\",\n    \"updated_at\": \"2024-07-24T09:50:08.000000Z\",\n    \"values\": {\n        \"common\": {\n            \"sku\": \"44441\",\n            \"Name\": \"Webkul Simple Product update\",\n            \"size\": \"size3\",\n            \"color\": \"option1\",\n            \"files\": \"product/1/files/SqYmzz9q9WdxNBWCJ0Ywvf7OTAChCjMad0djezq8/AKENEO CE-7.0.47 DOC.pdf\",\n            \"image\": \"product/1/image/2qF30fimXHruk2RrY2MBkMZgvyuwUG7bZNdCUa1R/5.jpg\",\n            \"price\": \"{\\\"USD\\\":\\\"100\\\"}\",\n            \"store\": \"garment\",\n            \"status\": \"true\",\n            \"collection\": \"option2,option3\",\n            \"description\": \"<p>Webkul Simple Product Description1111</p>\",\n            \"expire_date\": \"2024-07-11\",\n            \"releasedate\": \"2024-07-11 08:25:00\",\n            \"auto_exposure\": \"true\",\n            \"colormuliselect\": \"red1,blue1\",\n            \"short_description\": \"Webkul Simple Product Short Description211\"\n        },\n        \"categories\": [\n            \"master\",\n            \"master_accessories\",\n            \"master_accessories_belts\",\n            \"master_accessories_bags\",\n            \"master_accessories_sunglasses\",\n            \"master_men\",\n            \"master_men_blazers\",\n            \"master_men_blazers_deals\"\n        ],\n        \"associations\": {\n            \"up_sells\": [\n                \"1111111307\"\n            ],\n            \"cross_sells\": [\n                \"1111111307\"\n            ],\n            \"related_products\": [\n                \"1111111307\"\n            ]\n        },\n        \"locale_specific\": {\n            \"de_DE\": {\n                \"colorlocalewise\": \"black\"\n            },\n            \"en_US\": {\n                \"colorlocalewise\": \"pink\"\n            },\n            \"fr_FR\": {\n                \"colorlocalewise\": \"white\"\n            }\n        },\n        \"channel_specific\": {\n            \"default\": {\n                \"colorchannelwise\": \"opt2\"\n            },\n            \"ecommerce\": {\n                \"colorchannelwise\": \"opt2\"\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/44441",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "44441"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/44441",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "44441"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/44441",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "44441"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"44441\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Products.\n\n###"
+    },
+    {
+      "name": "Configurable Products",
+      "item": [
+        {
+          "name": "Get a Configurable Products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products??limit=10&page=1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products"
+              ],
+              "query": [
+                {
+                  "key": "?limit",
+                  "value": "10"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "filters",
+                  "value": "{\"categories\":[{\"operator\":\"IN\",\"value\":[\"root\"]}], \"sku\":[{\"operator\":\"=\",\"value\": \"config-123\"}]}",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a Configurable Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products/Configurable-product",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products",
+                "Configurable-product"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a Configurable Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n           \"sku\": \"Akeneo-product\",\n           \"parent\": null,\n           \"family\": \"accessories\",\n           \"type\": \"configurable\",\n           \"additional\": null,\n           \"created_at\": \"2024-07-12T07:41:29.000000Z\",\n           \"updated_at\": \"2024-07-24T11:17:13.000000Z\",\n           \"values\": {\n               \"common\": {\n                   \"sku\": \"Akeneo-product\",\n                   \"Name\": \"Akeneo Product\",\n                   \"size\": \"size4\",\n                   \"store\": \"mobile\",\n                   \"status\": \"false\",\n                   \"collection\": \"option3\",\n                   \"description\": \"<p>Akeneo product description</p>\",\n                   \"expire_date\": \"2024-07-12\",\n                   \"releasedate\": \"2024-07-12 12:00:00\",\n                   \"auto_exposure\": \"false\",\n                   \"short_description\": \"Akeneo Product\"\n               },\n               \"categories\": [\n                   \"master_men_blazers\",\n                   \"master_men_blazers_deals\"\n               ],\n               \"associations\": {\n                   \"up_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"cross_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"related_products\": [\n                       \"1111111304\"\n                   ]\n               }\n           },\n           \"super_attributes\": [\n               \"color\"\n           ]\n       }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a Configurable Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n           \"sku\": \"Akeneo-product\",\n           \"parent\": null,\n           \"family\": \"accessories\",\n           \"type\": \"Akeneo\",\n           \"additional\": null,\n           \"created_at\": \"2024-07-12T07:41:29.000000Z\",\n           \"updated_at\": \"2024-07-24T11:17:13.000000Z\",\n           \"values\": {\n               \"common\": {\n                   \"sku\": \"Akeneo-product\",\n                   \"Name\": \"Akeneo Product\",\n                   \"size\": \"size4\",\n                   \"store\": \"mobile\",\n                   \"status\": \"false\",\n                   \"collection\": \"option3\",\n                   \"description\": \"<p>Akeneo product description</p>\",\n                   \"expire_date\": \"2024-07-12\",\n                   \"releasedate\": \"2024-07-12 12:00:00\",\n                   \"auto_exposure\": \"false\",\n                   \"short_description\": \"Akeneo Product111\"\n               },\n               \"categories\": [\n                   \"master_men_blazers\",\n                   \"master_men_blazers_deals\"\n               ],\n               \"associations\": {\n                   \"up_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"cross_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"related_products\": [\n                       \"1111111304\"\n                   ]\n               }\n           },\n           \"super_attributes\": [\n               \"color\"\n           ],\n           \"variants\": [\n               {\n                   \"sku\": \"Akeneo-product-option1\",\n                   \"attributes\": {\n                       \"color\": \"option1\"\n                   }\n               },\n               {\n                   \"sku\": \"Akeneo-product-option2\",\n                   \"attributes\": {\n                       \"color\": \"option2\"\n                   }\n               }\n           ]\n       }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products/Akeneo-product",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products",
+                "Akeneo-product"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add New Varaint (Product childs)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n           \"parent\": \"Akeneo-product\",\n           \"family\": \"accessories\",\n           \"additional\": null,\n           \"created_at\": \"2024-07-12T07:41:29.000000Z\",\n           \"updated_at\": \"2024-07-24T11:17:13.000000Z\",\n           \"values\": {\n               \"common\": {\n                   \"sku\": \"Akeneo-product-option2\",\n                   \"Name\": \"Akeneo Product\",\n                   \"size\": \"size4\",\n                   \"store\": \"mobile\",\n                   \"status\": \"false\",\n                   \"collection\": \"option3\",\n                   \"description\": \"<p>Akeneo product description</p>\",\n                   \"expire_date\": \"2024-07-12\",\n                   \"releasedate\": \"2024-07-12 12:00:00\",\n                   \"auto_exposure\": \"false\",\n                   \"short_description\": \"Akeneo Product111\"\n               },\n               \"categories\": [\n                   \"master_men_blazers\",\n                   \"master_men_blazers_deals\"\n               ],\n               \"associations\": {\n                   \"up_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"cross_sells\": [\n                       \"1111111304\"\n                   ],\n                   \"related_products\": [\n                       \"1111111304\"\n                   ]\n               }\n           },\n           \"variant\": {\n        \"attributes\": {\n            \"color\": \"option2\"\n        }\n       }}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upload & Generate Product Media File path",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/home/users/deepak.kumar/Downloads/Image/mb01-blue-0.jpg"
+                },
+                {
+                  "key": "sku",
+                  "value": "1111111304",
+                  "type": "text"
+                },
+                {
+                  "key": "attribute",
+                  "value": "image",
+                  "type": "text"
+                },
+                {
+                  "key": "channel",
+                  "value": "default",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "locale",
+                  "value": "null",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/rest/media-files/product",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "media-files",
+                "product"
+              ],
+              "query": [
+                {
+                  "key": "file",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update a Configurable Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products/Akeneo-product",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products",
+                "Akeneo-product"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"Akeneo-product\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "In this section, we will see all the APIs which are related to Configurable Products.\n\n###"
+    },
+    {
+      "name": "Authentification by password",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "postman.setEnvironmentVariable(",
+              "    \"base64ClientIdSecret\", ",
+              "    btoa(postman.getEnvironmentVariable(\"clientId\") + ':' + postman.getEnvironmentVariable(\"secret\"))",
+              ");"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "postman.setEnvironmentVariable(\"token\", jsonData.access_token);",
+              "postman.setEnvironmentVariable(\"refreshToken\", jsonData.refresh_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Basic {{base64ClientIdSecret}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"username\" : \"{{username}}\",\n    \"password\" : \"{{password}}\",\n    \"grant_type\": \"password\"\n }"
+        },
+        "url": {
+          "raw": "{{url}}/oauth/token",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "oauth",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Authentification by Refresh token",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "postman.setEnvironmentVariable(",
+              "    \"base64ClientIdSecret\", ",
+              "    btoa(postman.getEnvironmentVariable(\"clientId\") + ':' + postman.getEnvironmentVariable(\"secret\"))",
+              ");",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = JSON.parse(responseBody);",
+              "postman.setEnvironmentVariable(\"token\", jsonData.access_token);",
+              "postman.setEnvironmentVariable(\"refreshToken\", jsonData.refresh_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Basic {{base64ClientIdSecret}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"refresh_token\" : \"{{refreshToken}}\",\n    \"grant_type\": \"refresh_token\"\n }"
+        },
+        "url": {
+          "raw": "{{url}}/oauth/token",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "oauth",
+            "token"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
 }
