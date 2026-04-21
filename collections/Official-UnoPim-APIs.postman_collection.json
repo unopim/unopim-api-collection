@@ -624,6 +624,85 @@
           "createdAt": "2024-09-13T04:44:21.000Z",
           "updatedAt": "2024-09-13T04:44:21.000Z",
           "uid": "37137259-5325ff51-57b6-47cf-8878-1b7d5bcbb1fb"
+        },
+        {
+          "name": "Delete a Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/electronic3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "electronic3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update a Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/categories/electronic3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "categories",
+                "electronic3"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"parent\": \"master\",\n    \"additional_data\": {\n        \"locale_specific\": {\n            \"en_US\": {\n                \"name\": \"Electronics Updated\"\n            }\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
         }
       ],
       "id": "ab90bde4-60cb-4a4d-87ef-2176336cee55",
@@ -1355,6 +1434,51 @@
           "createdAt": "2024-09-13T04:44:21.000Z",
           "updatedAt": "2024-09-13T04:44:21.000Z",
           "uid": "37137259-59d3e93b-5892-4ee7-bf5c-39e307cd7050"
+        },
+        {
+          "name": "Upload & Generate Swatch Media File path",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/media-files/swatch",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "media-files",
+                "swatch"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/path/to/swatch-image.png"
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ],
       "id": "3b6465f7-4fde-44a4-99fd-8ffcf27ea67b",
@@ -1964,6 +2088,85 @@
           "createdAt": "2024-09-13T04:44:21.000Z",
           "updatedAt": "2024-09-13T04:44:21.000Z",
           "uid": "37137259-c86e6f53-a060-443c-a28c-027bc256446a"
+        },
+        {
+          "name": "Delete a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/44441",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "44441"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update a Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/products/44441",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "products",
+                "44441"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"44441\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
         }
       ],
       "id": "800b5ecf-c06d-49a3-a533-4d5e302a85fe",
@@ -2298,6 +2501,50 @@
           "createdAt": "2024-09-13T04:44:21.000Z",
           "updatedAt": "2024-09-13T04:44:21.000Z",
           "uid": "37137259-d5b5841a-9d2b-4ca6-82c3-ab7d1ca5b4b5"
+        },
+        {
+          "name": "Partial Update a Configurable Product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/v1/rest/configrable-products/Akeneo-product",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "rest",
+                "configrable-products",
+                "Akeneo-product"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"sku\": \"Akeneo-product\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
         }
       ],
       "id": "19062bcd-5e3e-4c3f-b5b7-f388d02847e9",
