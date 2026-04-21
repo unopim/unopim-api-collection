@@ -4,8 +4,10 @@
     "name": "Official UnoPim APIs",
     "description": "The UnoPim API is a comprehensive RESTful API for managing Product Information Management (PIM) operations. This API enables you to manage products, categories, attributes, locales, channels, and other essential PIM functionalities.\n\n**Official Documentation**: [Postman Documenter](https://documenter.getpostman.com/view/21990056/2sA3kXE17F)\n\n---\n\n## \ud83d\udd10 Authentication\n\nUnoPim API uses **OAuth 2.0** for authentication with two methods:\n\n### 1\\. Authentication by Password\n\n**Endpoint:** `POST {{url}}/oauth/token`\n\n**Request Body:**\n\n``` json\n{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\",\n    \"grant_type\": \"password\"\n}\n\n ```\n\n**Headers:**\n\n```\nAuthorization: Basic {{base64ClientIdSecret}}\nContent-Type: application/json\n\n ```\n\n\u2728 **Auto-saves** `access_token` and `refresh_token` to environment variables\n\n### 2\\. Authentication by Refresh Token\n\n**Endpoint:** `POST {{url}}/oauth/token`\n\n**Request Body:**\n\n``` json\n{\n    \"refresh_token\": \"{{refreshToken}}\",\n    \"grant_type\": \"refresh_token\"\n}\n\n ```\n\n---\n\n## \ud83c\udf10 Base URL\n\n```\n{{url}}/api/v1/rest\n\n ```\n\n---\n\n## \ud83d\udcc2 API Resources (45 Endpoints)\n\n### 1\\. **Locale Management** (2 endpoints)\n\n- `GET /locales` - Get all locales\n    \n- `GET /locales/{code}` - Get locale by code\n    \n\n### 2\\. **Currency Management** (2 endpoints)\n\n- `GET /currencies` - Get all currencies\n    \n- `GET /currencies/{code}` - Get currency by code\n    \n\n### 3\\. **Channel Management** (2 endpoints)\n\n- `GET /channels` - Get all channels\n    \n- `GET /channels/{code}` - Get channel by code (e.g., ecommerce)\n    \n\n### 4\\. **Category Management** (5 endpoints)\n\n- `GET /categories` - Get all categories (with pagination & filters)\n    \n- `GET /categories/{code}` - Get category by code\n    \n- `POST /categories` - Create a category\n    \n- `PUT /categories/{code}` - Update a category\n    \n- `POST /media-files/category` - Upload category media files\n    \n\n**Example Create Category Request:**\n\n``` json\n{\n    \"code\": \"electronic4\",\n    \"parent\": \"electronic2\",\n    \"additional_data\": {\n        \"common\": {\n            \"description\": \"Electronics Category Description\",\n            \"required\": \"Electronics Required Category\"\n        },\n        \"locale_specific\": {\n            \"de_DE\": {\"name\": \"Electronic 3 (de_DE)\"},\n            \"en_US\": {\"name\": \"Electronic 3(en_US)\"},\n            \"fr_FR\": {\"name\": \"Electronic 3(fr_FR)\"}\n        }\n    }\n}\n\n ```\n\n### 5\\. **Category Fields Management** (4 endpoints)\n\n- `GET /category-fields` - Get all category fields\n    \n- `GET /category-fields/{code}` - Get category field by code\n    \n- `POST /category-fields` - Create a category field\n    \n- `PUT /category-fields/{code}` - Update a category field\n    \n\n### 6\\. **Category Field Options** (3 endpoints)\n\n- `GET /category-fields/{code}/options` - Get field options\n    \n- `POST /category-fields/{code}/options` - Create field options\n    \n- `PUT /category-fields/{code}/options` - Update field options\n    \n\n### 7\\. **Attribute Management** (4 endpoints)\n\n- `GET /attributes` - Get all attributes (with pagination & filters)\n    \n- `GET /attributes/{code}` - Get attribute by code\n    \n- `POST /attributes` - Create an attribute\n    \n- `PUT /attributes/{code}` - Update an attribute\n    \n\n**Example Filter:**\n\n``` json\n{\n  \"code\": [{\n    \"operator\": \"IN\",\n    \"value\": [\"weight\"]\n  }]\n}\n\n ```\n\n### 8\\. **Attribute Options** (3 endpoints)\n\n- `GET /attributes/{code}/options` - Get attribute options (e.g., size: S, M, L, XL)\n    \n- `POST /attributes/{code}/options` - Create attribute options\n    \n- `PUT /attributes/{code}/options` - Update attribute options\n    \n\n### 9\\. **Attribute Groups** (4 endpoints)\n\n- `GET /attribute-groups` - Get all attribute groups\n    \n- `GET /attribute-groups/{code}` - Get attribute group by code\n    \n- `POST /attribute-groups` - Create an attribute group\n    \n- `PUT /attribute-groups/{code}` - Update an attribute group\n    \n\n### 10\\. **Attribute Families** (4 endpoints)\n\n- `GET /attribute-families` - Get all attribute families\n    \n- `GET /attribute-families/{code}` - Get attribute family by code\n    \n- `POST /attribute-families` - Create an attribute family\n    \n- `PUT /attribute-families/{code}` - Update an attribute family\n    \n\n### 11\\. **Product Management** (4 endpoints)\n\n- `GET /products` - Get all products (with pagination & filters)\n    \n- `GET /products/{sku}` - Get product by SKU\n    \n- `POST /products` - Create a product\n    \n- `PUT /products/{sku}` - Update a product\n    \n\n### 12\\. **Configurable Products** (6 endpoints)\n\n- `GET /products/configurable` - Get all configurable products\n    \n- `GET /products/configurable/{sku}` - Get configurable product by SKU\n    \n- `POST /products/configurable` - Create configurable product\n    \n- `PUT /products/configurable/{sku}` - Update configurable product\n    \n- `POST /products` - Add new variant (product children)\n    \n- `POST /products/configurable/{sku}/variants` - Associate variants to configurable product\n    \n\n---\n\n## \ud83d\udd0d Common Query Parameters\n\n### Pagination\n\n```\n?limit=100&page=1\n\n ```\n\n### Filtering\n\n``` json\n{\n  \"field_name\": [{\n    \"operator\": \"=\",\n    \"value\": \"VALUE\"\n  }]\n}\n\n ```\n\n**Supported Operators:** `=`, `!=`, `IN`, `NOT IN`, `>`, `<`, `>=`, `<=`, `LIKE`\n\n---\n\n## \ud83d\udce4 Response Formats\n\n### Success Response:\n\n``` json\n{\n  \"data\": { ... },\n  \"message\": \"Success message\",\n  \"status\": true\n}\n\n ```\n\n### Paginated Response:\n\n``` json\n{\n  \"data\": [ ... ],\n  \"meta\": {\n    \"current_page\": 1,\n    \"per_page\": 100,\n    \"total\": 500,\n    \"last_page\": 5\n  }\n}\n\n ```\n\n### Error Response:\n\n``` json\n{\n  \"error\": \"Error message\",\n  \"message\": \"Detailed error description\",\n  \"status\": false\n}\n\n ```\n\n---\n\n## \u26a0\ufe0f HTTP Status Codes\n\n- **200 OK** - Request successful\n    \n- **201 Created** - Resource created\n    \n- **400 Bad Request** - Invalid parameters\n    \n- **401 Unauthorized** - Invalid/expired token\n    \n- **403 Forbidden** - Insufficient permissions\n    \n- **404 Not Found** - Resource not found\n    \n- **422 Unprocessable Entity** - Validation errors\n    \n- **429 Too Many Requests** - Rate limit exceeded\n    \n- **500 Internal Server Error** - Server error\n    \n\n---\n\n## \ud83c\udfaf Best Practices\n\n1. **Token Management** - Implement automatic token refresh before expiration\n    \n2. **Error Handling** - Always check response status codes and handle errors gracefully\n    \n3. **Performance** - Use pagination and filters to reduce payload sizes\n    \n4. **Locale Support** - Always provide locale-specific data for multi-language support\n    \n5. **Caching** - Cache responses when appropriate to reduce API calls\n    \n\n---\n\n## \ud83d\udca1 What's Next?\n\nI can help you with:\n\n1. **Add test scripts** to validate responses for specific endpoints\n    \n2. **Create a monitor** to automatically test critical endpoints on a schedule\n    \n3. **Generate code snippets** in various languages (JavaScript, Python, cURL, PHP, etc.)\n    \n4. **Set up mock servers** to simulate API responses for development\n    \n5. **Create automated workflows** using Postman Flows\n    \n6. **Export documentation** in different formats (HTML, Markdown, PDF)\n    \n7. **Add examples** to specific requests for better documentation\n    \n8. **Create pre-request scripts** for dynamic data generation\n    \n\nWould you like me to help with any of these next steps?",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "4385199",
-    "_collection_link": "https://go.postman.co/collection/37137259-ef999799-2be1-4a23-bff8-a1e7a10f1563?source=collection_link"
+    "createdAt": "2024-09-13T04:44:20.000Z",
+    "updatedAt": "2026-01-16T12:37:43.000Z",
+    "lastUpdatedBy": "4385199",
+    "uid": "37137259-ef999799-2be1-4a23-bff8-a1e7a10f1563"
   },
   "item": [
     {
@@ -20,10 +22,15 @@
                 "exec": [
                   ""
                 ],
-                "type": "text/javascript"
+                "type": "text/javascript",
+                "id": "17b693b2-ea14-418b-91ad-df21b54bab83"
               }
             }
           ],
+          "id": "46b12040-2604-4a61-badc-628d601c816c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -76,10 +83,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-46b12040-2604-4a61-badc-628d601c816c"
         },
         {
           "name": "Get locale by Code",
+          "id": "aa0b8387-0d3c-46e1-9ccc-a31acf32e6bf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -111,16 +125,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-aa0b8387-0d3c-46e1-9ccc-a31acf32e6bf"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to locales."
+      "id": "70b9dc36-f129-4df9-baa2-603a17b94cf7",
+      "description": "In this section, we will see all the APIs which are related to locales.",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-70b9dc36-f129-4df9-baa2-603a17b94cf7"
     },
     {
       "name": "Currency",
       "item": [
         {
           "name": "Get all Currencies",
+          "id": "e456499f-f5ab-4c4e-b4d4-ba17c01604df",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -173,10 +198,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-e456499f-f5ab-4c4e-b4d4-ba17c01604df"
         },
         {
           "name": "Get Currency By Code",
+          "id": "5f1c8690-4b36-4fe2-b9d9-8d255859fdae",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -208,16 +240,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-5f1c8690-4b36-4fe2-b9d9-8d255859fdae"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Currencies."
+      "id": "d2975038-d46c-4302-a6db-f631a9bc4fea",
+      "description": "In this section, we will see all the APIs which are related to Currencies.",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-d2975038-d46c-4302-a6db-f631a9bc4fea"
     },
     {
       "name": "Channel",
       "item": [
         {
           "name": "Get All Channels",
+          "id": "b01c96c0-4cba-4012-b235-417b649a01af",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -248,10 +291,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-b01c96c0-4cba-4012-b235-417b649a01af"
         },
         {
           "name": "Get Channel By Code",
+          "id": "1ed9a502-1ca8-42c1-a765-6496892ec576",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -283,16 +333,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-1ed9a502-1ca8-42c1-a765-6496892ec576"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Channels.\n\n###"
+      "id": "9767748c-e7a9-421a-b4f4-e28d0e52be50",
+      "description": "In this section, we will see all the APIs which are related to Channels.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-9767748c-e7a9-421a-b4f4-e28d0e52be50"
     },
     {
       "name": "Category",
       "item": [
         {
           "name": "Get All Categories",
+          "id": "a1bf9c97-56cf-4a3e-bdf7-d6bf3f7792aa",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -335,10 +396,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-a1bf9c97-56cf-4a3e-bdf7-d6bf3f7792aa"
         },
         {
           "name": "Get Category by Category Code",
+          "id": "a85f1567-70fd-484a-a727-de8c892accf0",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -370,10 +438,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-a85f1567-70fd-484a-a727-de8c892accf0"
         },
         {
           "name": "Create a Category",
+          "id": "35051636-e578-4736-8063-be0cf7f9b7ad",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -413,10 +488,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-35051636-e578-4736-8063-be0cf7f9b7ad"
         },
         {
           "name": "Update a category",
+          "id": "a212ce1c-c928-4cfc-85b2-0eff05ebb738",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -457,10 +539,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-a212ce1c-c928-4cfc-85b2-0eff05ebb738"
         },
         {
           "name": "Upload & Generate Category Media File path",
+          "id": "5325ff51-57b6-47cf-8878-1b7d5bcbb1fb",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -531,95 +620,27 @@
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "Delete a Category",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/categories/electronic3",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "categories",
-                "electronic3"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Partial Update a Category",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/categories/electronic3",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "categories",
-                "electronic3"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"parent\": \"master\",\n    \"additional_data\": {\n        \"locale_specific\": {\n            \"en_US\": {\n                \"name\": \"Electronics Updated\"\n            }\n        }\n    }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-5325ff51-57b6-47cf-8878-1b7d5bcbb1fb"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Category.\n\n###"
+      "id": "ab90bde4-60cb-4a4d-87ef-2176336cee55",
+      "description": "In this section, we will see all the APIs which are related to Category.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-ab90bde4-60cb-4a4d-87ef-2176336cee55"
     },
     {
       "name": "Category Fields",
       "item": [
         {
           "name": "Get All Category Fields",
+          "id": "2abae894-bac8-445a-95b2-ab7c0a486749",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -662,10 +683,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-2abae894-bac8-445a-95b2-ab7c0a486749"
         },
         {
           "name": "Get a Category Field By Code",
+          "id": "2dfe3ae0-9041-408d-8872-13148d1e4174",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -697,10 +725,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-2dfe3ae0-9041-408d-8872-13148d1e4174"
         },
         {
           "name": "Create a Category Field",
+          "id": "d01061d3-a321-4f7d-a097-6739a016d12d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -740,10 +775,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-d01061d3-a321-4f7d-a097-6739a016d12d"
         },
         {
           "name": "Update a Category Field By Code",
+          "id": "279785ee-bf15-4d69-a78f-3c29e185e866",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -784,16 +826,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-279785ee-bf15-4d69-a78f-3c29e185e866"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Category Fields.\n\n###"
+      "id": "c2c9fbd7-6ab9-46f0-a58d-4b62655c0f72",
+      "description": "In this section, we will see all the APIs which are related to Category Fields.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-c2c9fbd7-6ab9-46f0-a58d-4b62655c0f72"
     },
     {
       "name": "Category Field Options",
       "item": [
         {
           "name": "Get a Category Field Options By Code",
+          "id": "5a8c5691-5922-41df-9e7a-296c43d9f1ed",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -826,10 +879,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-5a8c5691-5922-41df-9e7a-296c43d9f1ed"
         },
         {
           "name": "Create a Category Field Options",
+          "id": "eb8981b1-3e28-404d-b5a5-0b4bea33f382",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -871,10 +931,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-eb8981b1-3e28-404d-b5a5-0b4bea33f382"
         },
         {
           "name": "Update Category Field Options",
+          "id": "5a168ce1-f44f-4b4f-a29b-685f39708813",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -916,16 +983,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-5a168ce1-f44f-4b4f-a29b-685f39708813"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Category Field Options.\n\n###"
+      "id": "8154968a-62d5-429d-8691-5e80625f3444",
+      "description": "In this section, we will see all the APIs which are related to Category Field Options.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-8154968a-62d5-429d-8691-5e80625f3444"
     },
     {
       "name": "Attribute",
       "item": [
         {
           "name": "Get an Attributes",
+          "id": "3991d296-bad5-407c-a232-20570ca95f95",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -973,10 +1051,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-3991d296-bad5-407c-a232-20570ca95f95"
         },
         {
           "name": "Get an Attribute By Code",
+          "id": "78704fac-b5df-40b4-8c11-f18b482e77b6",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1008,10 +1093,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-78704fac-b5df-40b4-8c11-f18b482e77b6"
         },
         {
           "name": "Create an attribute",
+          "id": "b9d677c9-911f-4361-b7a9-569559cc5c8e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1051,10 +1143,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-b9d677c9-911f-4361-b7a9-569559cc5c8e"
         },
         {
           "name": "Update an Attribute By Attribute Code",
+          "id": "ce097e19-7798-4f42-8ec3-c94675375182",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1095,16 +1194,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-ce097e19-7798-4f42-8ec3-c94675375182"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Attribute.\n\n###"
+      "id": "fd21b305-ec5d-4d35-b587-d687e868d64f",
+      "description": "In this section, we will see all the APIs which are related to Attribute.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-fd21b305-ec5d-4d35-b587-d687e868d64f"
     },
     {
       "name": "Attribute Options",
       "item": [
         {
           "name": "Get Attribute Options By Attribute Code",
+          "id": "037a0df4-eefd-4651-8d1a-4f6c6284f616",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1137,10 +1247,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-037a0df4-eefd-4651-8d1a-4f6c6284f616"
         },
         {
           "name": "Create Attribute Options By Attribute Code",
+          "id": "7039c67c-ad84-4c20-b33d-89e651d7f66a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1182,10 +1299,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-7039c67c-ad84-4c20-b33d-89e651d7f66a"
         },
         {
           "name": "Update Attribute Options By Attribute Code",
+          "id": "59d3e93b-5892-4ee7-bf5c-39e307cd7050",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1227,61 +1351,27 @@
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "Upload & Generate Swatch Media File path",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/media-files/swatch",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "media-files",
-                "swatch"
-              ]
-            },
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "file",
-                  "type": "file",
-                  "src": "/path/to/swatch-image.png"
-                }
-              ]
-            }
-          },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-59d3e93b-5892-4ee7-bf5c-39e307cd7050"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Attribute Options.\n\n###"
+      "id": "3b6465f7-4fde-44a4-99fd-8ffcf27ea67b",
+      "description": "In this section, we will see all the APIs which are related to Attribute Options.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-3b6465f7-4fde-44a4-99fd-8ffcf27ea67b"
     },
     {
       "name": "Attribute Groups",
       "item": [
         {
           "name": "Get All Attribute Groups",
+          "id": "cfb3058e-c624-4e80-9c72-e0fd6c15bc6d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1319,10 +1409,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-cfb3058e-c624-4e80-9c72-e0fd6c15bc6d"
         },
         {
           "name": "Get Attribute Group by Group Code",
+          "id": "6ec42410-fed7-47da-883d-f0c67719ba01",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1361,10 +1458,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-6ec42410-fed7-47da-883d-f0c67719ba01"
         },
         {
           "name": "Create an Attribute Group",
+          "id": "47126d57-4523-488a-ba4a-f9a0d4a6c6eb",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1404,10 +1508,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-47126d57-4523-488a-ba4a-f9a0d4a6c6eb"
         },
         {
           "name": "Update an Attribute Group",
+          "id": "db93ad02-a7c6-478d-a398-5228d3631f49",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1448,16 +1559,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-db93ad02-a7c6-478d-a398-5228d3631f49"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Attribute Groups.\n\n###"
+      "id": "7eeb4c58-9ce4-423f-840b-52a505fd4961",
+      "description": "In this section, we will see all the APIs which are related to Attribute Groups.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-7eeb4c58-9ce4-423f-840b-52a505fd4961"
     },
     {
       "name": "Attribute Families",
       "item": [
         {
           "name": "Get a Attribute Families",
+          "id": "bef6a223-6e68-4ff5-b0eb-24971b1d6243",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1488,10 +1610,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-bef6a223-6e68-4ff5-b0eb-24971b1d6243"
         },
         {
           "name": "Get a Attribute Families By Family Code",
+          "id": "d5247758-5090-4d3b-80d5-b4364f3d68e0",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1523,10 +1652,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-d5247758-5090-4d3b-80d5-b4364f3d68e0"
         },
         {
           "name": "Create a Attribute Family",
+          "id": "d094dd6c-d3c1-441b-90ce-b56a87d99e9e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1566,10 +1702,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-d094dd6c-d3c1-441b-90ce-b56a87d99e9e"
         },
         {
           "name": "Update a Attribute Family",
+          "id": "8555493f-8e09-4e06-9e81-3caf4a290e61",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1610,16 +1753,27 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-8555493f-8e09-4e06-9e81-3caf4a290e61"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Attribute Family."
+      "id": "6c1a736b-b7c9-4d7b-8996-ac6d547f8747",
+      "description": "In this section, we will see all the APIs which are related to Attribute Family.",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-6c1a736b-b7c9-4d7b-8996-ac6d547f8747"
     },
     {
       "name": "Product",
       "item": [
         {
           "name": "Get All Products",
+          "id": "8522014b-5d32-4684-92d0-400b80d2f979",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1666,10 +1820,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-8522014b-5d32-4684-92d0-400b80d2f979"
         },
         {
           "name": "Get Product By SKU",
+          "id": "3c9b2565-705c-4a22-a902-ae5907cb267c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1700,10 +1861,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-3c9b2565-705c-4a22-a902-ae5907cb267c"
         },
         {
           "name": "Create a Product",
+          "id": "68b3fdbd-b01c-442b-b8b6-239cf3591c05",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1742,10 +1910,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-12-17T07:45:20.000Z",
+          "uid": "37137259-68b3fdbd-b01c-442b-b8b6-239cf3591c05"
         },
         {
           "name": "Update a Product",
+          "id": "c86e6f53-a060-443c-a28c-027bc256446a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1785,95 +1960,27 @@
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "Delete a Product",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/products/44441",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "products",
-                "44441"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Partial Update a Product",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/products/44441",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "products",
-                "44441"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"sku\": \"44441\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-c86e6f53-a060-443c-a28c-027bc256446a"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Products.\n\n###"
+      "id": "800b5ecf-c06d-49a3-a533-4d5e302a85fe",
+      "description": "In this section, we will see all the APIs which are related to Products.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-800b5ecf-c06d-49a3-a533-4d5e302a85fe"
     },
     {
       "name": "Configurable Products",
       "item": [
         {
           "name": "Get a Configurable Products",
+          "id": "9ba3fa32-7b2d-440c-b417-aa1c57640b08",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1918,10 +2025,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-9ba3fa32-7b2d-440c-b417-aa1c57640b08"
         },
         {
           "name": "Get a Configurable Product",
+          "id": "e51289c7-e0c7-4381-8fa4-160c3377ca2d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1952,10 +2066,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-e51289c7-e0c7-4381-8fa4-160c3377ca2d"
         },
         {
           "name": "Create a Configurable Product",
+          "id": "e13e73c8-a03b-4731-aaf0-84c1f2ad21b9",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -1994,10 +2115,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-e13e73c8-a03b-4731-aaf0-84c1f2ad21b9"
         },
         {
           "name": "Update a Configurable Product",
+          "id": "a22fd97b-b2cc-4fd8-b51f-1cacdebfed6f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -2037,10 +2165,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-a22fd97b-b2cc-4fd8-b51f-1cacdebfed6f"
         },
         {
           "name": "Add New Varaint (Product childs)",
+          "id": "4523e40f-f333-4d1e-ba9b-fde4ae97ff42",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -2079,10 +2214,17 @@
               ]
             }
           },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-4523e40f-f333-4d1e-ba9b-fde4ae97ff42"
         },
         {
           "name": "Upload & Generate Product Media File path",
+          "id": "d5b5841a-9d2b-4ca6-82c3-ab7d1ca5b4b5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "auth": {
               "type": "noauth"
@@ -2152,54 +2294,17 @@
               ]
             }
           },
-          "response": []
-        },
-        {
-          "name": "Partial Update a Configurable Product",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Authorization",
-                "value": "Bearer {{token}}",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{url}}/api/v1/rest/configrable-products/Akeneo-product",
-              "host": [
-                "{{url}}"
-              ],
-              "path": [
-                "api",
-                "v1",
-                "rest",
-                "configrable-products",
-                "Akeneo-product"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"sku\": \"Akeneo-product\",\n    \"values\": {\n        \"common\": {\n            \"status\": true\n        }\n    }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            }
-          },
-          "response": []
+          "response": [],
+          "createdAt": "2024-09-13T04:44:21.000Z",
+          "updatedAt": "2024-09-13T04:44:21.000Z",
+          "uid": "37137259-d5b5841a-9d2b-4ca6-82c3-ab7d1ca5b4b5"
         }
       ],
-      "description": "In this section, we will see all the APIs which are related to Configurable Products.\n\n###"
+      "id": "19062bcd-5e3e-4c3f-b5b7-f388d02847e9",
+      "description": "In this section, we will see all the APIs which are related to Configurable Products.\n\n###",
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-19062bcd-5e3e-4c3f-b5b7-f388d02847e9"
     },
     {
       "name": "Authentification by password",
@@ -2213,7 +2318,8 @@
               "    btoa(postman.getEnvironmentVariable(\"clientId\") + ':' + postman.getEnvironmentVariable(\"secret\"))",
               ");"
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "id": "b04ae715-48de-46b2-91bf-4bd3755b83ef"
           }
         },
         {
@@ -2224,10 +2330,15 @@
               "postman.setEnvironmentVariable(\"token\", jsonData.access_token);",
               "postman.setEnvironmentVariable(\"refreshToken\", jsonData.refresh_token);"
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "id": "9c508d25-86c8-476d-b7af-b10f3af2fb06"
           }
         }
       ],
+      "id": "47e20c19-ec26-4df7-ae49-28cbdd53364f",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
       "request": {
         "method": "POST",
         "header": [
@@ -2255,7 +2366,10 @@
           ]
         }
       },
-      "response": []
+      "response": [],
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-47e20c19-ec26-4df7-ae49-28cbdd53364f"
     },
     {
       "name": "Authentification by Refresh token",
@@ -2270,7 +2384,8 @@
               ");",
               ""
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "id": "8e0fc133-540d-4b64-b8c6-e8fcbe40e17b"
           }
         },
         {
@@ -2281,10 +2396,15 @@
               "postman.setEnvironmentVariable(\"token\", jsonData.access_token);",
               "postman.setEnvironmentVariable(\"refreshToken\", jsonData.refresh_token);"
             ],
-            "type": "text/javascript"
+            "type": "text/javascript",
+            "id": "ef3c16ea-944a-4e32-8799-2af1d8d73a95"
           }
         }
       ],
+      "id": "020651a7-0f73-4b99-98b5-8695a1f63965",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
       "request": {
         "method": "POST",
         "header": [
@@ -2312,7 +2432,10 @@
           ]
         }
       },
-      "response": []
+      "response": [],
+      "createdAt": "2024-09-13T04:44:21.000Z",
+      "updatedAt": "2024-09-13T04:44:21.000Z",
+      "uid": "37137259-020651a7-0f73-4b99-98b5-8695a1f63965"
     }
   ]
 }
