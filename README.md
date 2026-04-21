@@ -12,15 +12,15 @@ Official Postman collection for the [UnoPim](https://unopim.com) REST API — a 
 | Locale | List, Get by code |
 | Currency | List, Get by code |
 | Channel | List, Get by code |
-| Category | List, Get, Create, Update, Upload media |
+| Category | List, Get, Create, Update, Delete, Partial Update, Upload media |
 | Category Fields | List, Get, Create, Update |
 | Category Field Options | List, Create, Update |
 | Attribute | List, Get, Create, Update |
-| Attribute Options | List, Create, Update |
+| Attribute Options | List, Create, Update, Upload swatch media |
 | Attribute Groups | List, Get, Create, Update |
 | Attribute Families | List, Get, Create, Update |
-| Product (Simple) | List, Get, Create, Update |
-| Product (Configurable) | List, Get, Create, Update, Add variant, Upload media |
+| Product (Simple) | List, Get, Create, Update, Delete, Partial Update |
+| Product (Configurable) | List, Get, Create, Update, Partial Update, Add variant, Upload media |
 
 ## Getting Started
 
@@ -39,15 +39,17 @@ Click the **Run in Postman** button above, or manually import:
 
 | Variable | Description |
 |---|---|
-| `base_url` | Your UnoPim instance URL (e.g. `http://localhost:8000`) |
-| `client_id` | OAuth client ID from UnoPim admin |
-| `client_secret` | OAuth client secret from UnoPim admin |
-| `access_token` | Auto-filled after running the Auth request |
-| `refresh_token` | Auto-filled after running the Auth request |
+| `url` | Your UnoPim instance URL (e.g. `http://localhost:8000`) |
+| `clientId` | OAuth client ID from UnoPim admin |
+| `secret` | OAuth client secret from UnoPim admin |
+| `username` | Admin email (e.g. `admin@example.com`) |
+| `password` | Admin password |
+| `token` | Auto-filled after running the Auth request |
+| `refreshToken` | Auto-filled after running the Auth request |
 
 ### 3. Authenticate
 
-Run the **Authentication by password** request first — it will auto-set `access_token` and `refresh_token` in your environment.
+Run the **Authentication by password** request first — it will auto-set `token` and `refreshToken` in your environment.
 
 ## Contributing
 
@@ -59,11 +61,14 @@ We welcome contributions! To add or update API requests:
 4. Replace `collections/Official-UnoPim-APIs.postman_collection.json` with the new export
 5. Open a Pull Request with a clear description of what changed
 
-The maintainers will review and merge — the GitHub Action will then auto-sync the latest collection to the official Postman workspace daily.
+Once merged, the **Push to Postman** GitHub Action automatically syncs the updated collection to the official Postman workspace.
 
-## Auto-Sync
+## Workflows
 
-This repo uses a GitHub Action (`.github/workflows/sync-postman.yml`) to pull the latest collection from the Postman API every day at midnight UTC, keeping GitHub and Postman always in sync.
+| Workflow | Trigger | Direction |
+|---|---|---|
+| **Push Collection to Postman** | On push to `main` (collection file changed) | GitHub → Postman |
+| **Sync Postman Collection** | On GitHub Release published | Postman → GitHub |
 
 ## Links
 
