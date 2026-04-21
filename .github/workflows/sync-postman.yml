@@ -1,0 +1,34 @@
+name: Sync Postman Collection
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # daily at midnight UTC
+  workflow_dispatch:        # manual trigger from GitHub UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest collection from Postman API
+        run: |
+          curl -s "https://api.getpostman.com/collections/${{ secrets.POSTMAN_COLLECTION_ID }}" \
+            -H "X-Api-Key: ${{ secrets.POSTMAN_API_KEY }}" \
+            | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          with open('collections/Official-UnoPim-APIs.postman_collection.json', 'w') as f:
+              json.dump(data['collection'], f, indent=2)
+          print('Collection synced successfully')
+          "
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add collections/
+          git diff --cached --quiet && echo "No changes to commit" || (
+            git commit -m "chore: sync Postman collection [automated]"
+            git push
+          )
