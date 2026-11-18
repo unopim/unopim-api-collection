@@ -1702,6 +1702,437 @@
    "updatedAt": "2024-09-13T04:44:21.000Z",
    "uid": "37137259-8154968a-62d5-429d-8691-5e80625f3444"
   },
+   {
+  "name": "Association Types",
+  "item": [
+   {
+    "name": "Get All Association Types",
+    "id": "3077c92f-ab19-47da-8fe6-23c9e1d6880b",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "GET",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Create an Association Type",
+    "id": "225be563-e597-4811-b574-6942ab63b33e",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "POST",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Get Association Type by Code",
+    "id": "cb184eb1-83e2-416c-a442-ff06fedc60ec",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "GET",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Update an Association Type",
+    "id": "66d37afd-40c4-483e-889f-e34cadc0cda7",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "PUT",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Partially Update an Association Type",
+    "id": "c59d9ea0-9769-463a-ba2a-b88d0261747d",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "PATCH",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Delete an Association Type",
+    "id": "dbe84baf-f3fa-4450-8420-5cfd84bc6988",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "DELETE",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}"
+      ]
+     }
+    },
+    "response": []
+   }
+  ],
+  "id": "e983a69e-1967-4114-9c09-b071eded7777"
+ },
+  {
+  "name": "Association Type Fields",
+  "item": [
+   {
+    "name": "Get Association Type Fields",
+    "id": "faaa45b7-b1bd-4cc9-9fdc-925e01315cfe",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "GET",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}/fields",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}",
+       "fields"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Create an Association Type Field",
+    "id": "bc41bfad-29c6-4924-ba42-935868d94ba3",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "POST",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}/fields",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}",
+       "fields"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Update an Association Type Field",
+    "id": "4d17806e-04b2-4519-8e7b-40f8f848c25c",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "PUT",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}/fields/{{fieldCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}",
+       "fields",
+       "{{fieldCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Delete an Association Type Field",
+    "id": "f50fba7a-3f1a-4145-8f2c-5d65c1d4b196",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "DELETE",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/association-types/{{associationTypeCode}}/fields/{{fieldCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "association-types",
+       "{{associationTypeCode}}",
+       "fields",
+       "{{fieldCode}}"
+      ]
+     }
+    },
+    "response": []
+   }
+  ],
+  "id": "444dc0f8-4a23-4544-9918-c4801f8631c0"
+ },
   {
    "name": "Attribute",
    "item": [
@@ -2917,6 +3348,271 @@
    "updatedAt": "2024-09-13T04:44:21.000Z",
    "uid": "37137259-6c1a736b-b7c9-4d7b-8996-ac6d547f8747"
   },
+  {
+  "name": "Family Variant Structures",
+  "item": [
+   {
+    "name": "Get Family Variant Structures",
+    "id": "b2aad1a9-2c77-4941-ae42-e7e035c6b92a",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "GET",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Create a Family Variant Structure",
+    "id": "00bb31b3-99fe-4849-8fd2-423f7a49b216",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "POST",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Get Family Variant Structure",
+    "id": "5bd1fe6c-3b69-43bb-a7aa-2c13f372d97c",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "GET",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures/{{structureCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures",
+       "{{structureCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Update a Family Variant Structure",
+    "id": "4d88ccb2-5267-46ba-88ce-e60cd0696308",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "PUT",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures/{{structureCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures",
+       "{{structureCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Partially Update a Family Variant Structure",
+    "id": "492c95fd-7b8f-4462-a3cd-1f9a5fa5c05e",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "PATCH",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      },
+      {
+       "key": "Content-Type",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures/{{structureCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures",
+       "{{structureCode}}"
+      ]
+     }
+    },
+    "response": []
+   },
+   {
+    "name": "Delete a Family Variant Structure",
+    "id": "8ef719b4-2288-4015-bf51-efcea3c19acd",
+    "protocolProfileBehavior": {
+     "disableBodyPruning": true
+    },
+    "request": {
+     "auth": {
+      "type": "noauth"
+     },
+     "method": "DELETE",
+     "header": [
+      {
+       "key": "Authorization",
+       "value": "Bearer {{token}}",
+       "type": "text"
+      },
+      {
+       "key": "Accept",
+       "value": "application/json",
+       "type": "text"
+      }
+     ],
+     "url": {
+      "raw": "{{url}}/api/v1/rest/families/{{familyCode}}/variant-structures/{{structureCode}}",
+      "host": [
+       "{{url}}"
+      ],
+      "path": [
+       "api",
+       "v1",
+       "rest",
+       "families",
+       "{{familyCode}}",
+       "variant-structures",
+       "{{structureCode}}"
+      ]
+     }
+    },
+    "response": []
+   }
+  ],
+  "id": "e0c6beb9-ba27-4d28-99e5-67a37c37bd91"
+ },
   {
    "name": "Product",
    "item": [
