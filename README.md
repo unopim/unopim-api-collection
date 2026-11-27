@@ -76,3 +76,7 @@ Once merged, the **Push to Postman** GitHub Action automatically syncs the updat
 - [UnoPim Documentation](https://docs.unopim.com)
 - [UnoPim GitHub](https://github.com/unopim/unopim)
 - [Postman Workspace](https://www.postman.com/unopim/unopim-apis)
+
+## License
+
+The UnoPim API collection is open-source software licensed under the [MIT License](LICENSE).
